@@ -14,7 +14,9 @@ import http from 'http';
 import app from './src/app.js';
 import connectDB from './src/db/index.js';
 
-dotenv.config();
+dotenv.config({
+    path: './.env',
+});
 const server = http.createServer(app);
 const port = process.env.PORT || 5000;
 

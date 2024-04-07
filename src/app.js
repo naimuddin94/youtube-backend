@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable comma-dangle */
 /*
  * Title: Youtube Application
@@ -11,6 +12,7 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
+import userRouter from './routes/user.routes.js';
 
 const app = express();
 
@@ -28,5 +30,8 @@ app.use(cookieParser());
 app.get('/', (req, res) => {
     res.send('Server is running....');
 });
+
+// routes
+app.use('/api/v1/users', userRouter);
 
 export default app;

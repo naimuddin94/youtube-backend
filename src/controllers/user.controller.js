@@ -2,8 +2,7 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
 import User from '../models/user.model.js';
-import { ApiError, asyncHandler, uploadOnCloudinary } from '../utils.index.js';
-import ApiResponse from '../utils/ApiResponse.js';
+import { ApiError, ApiResponse, asyncHandler, uploadOnCloudinary } from '../utils/index.js';
 
 // register a new user
 const registerUser = asyncHandler(async (req, res) => {
@@ -12,12 +11,11 @@ const registerUser = asyncHandler(async (req, res) => {
     if ([username, email, fullName, password].some((field) => field?.trim() === '')) {
         throw new ApiError(400, 'All fields are required');
     }
-
     const existedUser = await User.findOne({
         $or: [{ email }, { username }],
     });
 
-    if (!existedUser) {
+    if (existedUser) {
         throw new ApiError(409, 'User with email or username already exists');
     }
 
@@ -34,6 +32,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+    console.log(15, avatar);
 
     if (!avatar) {
         throw new ApiError(400, 'Avatar file is required');
