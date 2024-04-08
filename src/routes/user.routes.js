@@ -1,8 +1,9 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/named */
 import express from 'express';
-import { registerUser } from '../controllers/user.controller.js';
+import { loginUser, logoutUser, registerUser } from '../controllers/user.controller.js';
 import { upload } from '../middlewares/multer.middleware.js';
+import { verifyJWT } from '../middlewares/auth.middleware.js';
 
 const userRouter = express.Router();
 
@@ -19,5 +20,7 @@ userRouter.route('/register').post(
     ]),
     registerUser
 );
+userRouter.route('/login').post(loginUser);
+userRouter.route('/logout').post(verifyJWT, logoutUser);
 
 export default userRouter;
