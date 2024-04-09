@@ -12,6 +12,7 @@
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
+import subscriptionRouter from './routes/subscription.routes.js';
 import userRouter from './routes/user.routes.js';
 
 const app = express();
@@ -33,5 +34,6 @@ app.get('/', (req, res) => {
 
 // routes
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/subscription', subscriptionRouter);
 
 export default app;

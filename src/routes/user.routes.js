@@ -2,6 +2,7 @@
 /* eslint-disable import/named */
 import express from 'express';
 import {
+    getUserChannelProfile,
     loginUser,
     logoutUser,
     registerUser,
@@ -36,5 +37,7 @@ userRouter.route('/update-avatar').patch(verifyJWT, upload.single('avatar'), upd
 userRouter
     .route('/update-cover-image')
     .patch(verifyJWT, upload.single('coverImage'), updateCoverImage);
+
+userRouter.route('/channel').get(verifyJWT, getUserChannelProfile);
 
 export default userRouter;
