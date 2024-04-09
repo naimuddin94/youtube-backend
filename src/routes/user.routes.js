@@ -6,6 +6,7 @@ import {
     logoutUser,
     registerUser,
     updateAvatar,
+    updateCoverImage,
     updatePassword,
     userRefreshToken,
 } from '../controllers/user.controller.js';
@@ -32,5 +33,8 @@ userRouter.route('/logout').post(verifyJWT, logoutUser);
 userRouter.route('/refresh-token').put(userRefreshToken);
 userRouter.route('/update-password').patch(verifyJWT, updatePassword);
 userRouter.route('/update-avatar').patch(verifyJWT, upload.single('avatar'), updateAvatar);
+userRouter
+    .route('/update-cover-image')
+    .patch(verifyJWT, upload.single('coverImage'), updateCoverImage);
 
 export default userRouter;

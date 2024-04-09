@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable object-curly-newline */
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
@@ -225,7 +226,7 @@ const updateAvatar = asyncHandler(async (req, res) => {
             },
         },
         { new: true }
-    ).select('-password');
+    ).select('-password -refreshToken');
 
     if (!user) {
         throw new ApiError(500, 'Something went wrong while updating avatar');
@@ -234,4 +235,48 @@ const updateAvatar = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, user, 'Avatar image updated successfully'));
 });
 
-export { loginUser, logoutUser, registerUser, updateAvatar, updatePassword, userRefreshToken };
+// update user avatar
+const updateCoverImage = asyncHandler(async (req, res) => {
+    const coverLocalPath = req.file?.path;
+
+    if (!coverLocalPath) {
+        throw new ApiError(400, 'Cover image file is missing');
+    }
+
+    const cover = await uploadOnCloudinary(coverLocalPath);
+
+    if (!cover.url) {
+        throw new ApiError(400, 'Error while uploading on cover image');
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set: {
+                coverImage: cover.url,
+            },
+        },
+        { new: true }
+    ).select('-password -refreshToken');
+
+    if (!user) {
+        throw new ApiError(500, 'Something went wrong while updating cover');
+    }
+
+    return res.status(200).json(new ApiResponse(200, user, 'Avatar image updated successfully'));
+});
+
+// get user chanel profile
+// const getUserChannelProfile = asyncHandler((req, res) => { 
+
+// })
+
+export {
+    loginUser,
+    logoutUser,
+    registerUser,
+    updateAvatar,
+    updateCoverImage,
+    updatePassword,
+    userRefreshToken
+};
